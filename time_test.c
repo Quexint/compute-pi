@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "computepi.h"
+#include <math.h>
 
 int main(int argc, char const *argv[])
 {
@@ -10,11 +11,21 @@ int main(int argc, char const *argv[])
     pi = compute_pi_baseline(N);
 #endif
 
+#if defined(BASELINE_PLUS)
+    pi = compute_pi_baseline(N);
+#endif
+
 #if defined(OPENMP_2)
+    pi = compute_pi_openmp(N, 2);
+#endif
+#if defined(OPENMP_2_PLUS)
     pi = compute_pi_openmp(N, 2);
 #endif
 
 #if defined(OPENMP_4)
+    pi = compute_pi_openmp(N, 4);
+#endif
+#if defined(OPENMP_4_PLUS)
     pi = compute_pi_openmp(N, 4);
 #endif
 
@@ -25,7 +36,9 @@ int main(int argc, char const *argv[])
 #if defined(AVXUNROLL)
     pi = compute_pi_avx_unroll(N);
 #endif
-    printf("N = %d , pi = %lf\n", N, pi);
+    double diff = pi - M_PI > 0 ? pi - M_PI : M_PI - pi;
+    double error = diff / M_PI;
+    printf("N = %d , pi = %lf , error = %lf\n", N, pi, error);
 
     return 0;
 }

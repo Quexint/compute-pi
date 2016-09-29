@@ -3,6 +3,16 @@
 #include <omp.h>
 #include "computepi.h"
 
+double compute_pi_baseline_plus(size_t N)
+{
+    double pi = 0.0;
+    for (size_t i = 0; i < N; i++) {
+        double x = N * N + i * i;
+        pi += N / (x);       // integrate 1/(1+x^2), i = 0....N
+    }
+    return pi * 4.0;
+}
+
 double compute_pi_baseline(size_t N)
 {
     double pi = 0.0;
@@ -25,6 +35,20 @@ double compute_pi_openmp(size_t N, int threads)
         for (size_t i = 0; i < N; i++) {
             x = (double) i / N;
             pi += dt / (1.0 + x * x);
+        }
+    }
+    return pi * 4.0;
+}
+
+double compute_pi_openmp_plus(size_t N, int threads)
+{
+    double pi = 0.0;
+    #pragma omp parallel num_threads(threads)
+    {
+        #pragma omp for reduction(+:pi)
+        for (size_t i = 0; i < N; i++) {
+            double x = N * N + i * i;
+            pi += N / (x);       // integrate 1/(1+x^2), i = 0....N
         }
     }
     return pi * 4.0;

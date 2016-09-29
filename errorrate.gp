@@ -6,5 +6,7 @@ set title 'perfomance comparison'
 set boxwidth 0.8
 set term png enhanced font 'Verdana,10'
 set output 'errorrate.png'
+set xtics 0,50000,200000
+set xtics rotate by -45
 
 plot for [COL=2:9] 'result_error_rate.csv' using COL:xticlabels(1) title columnheader

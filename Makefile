@@ -34,13 +34,13 @@ check: default
 	time ./time_test_avxunroll
 
 gencsv: default
-	echo "N baseline baselineP OMP2 OMP2P OMP4 OMP4P avx avx_unroll" > result_clock_gettime.csv
-	for i in `seq 50000 5000 200000`; do \
+	echo "N baseline baselineP OMP2 OMP2P OMP4 OMP4P avx avx_{unroll}" > result_clock_gettime.csv
+	for i in `seq 5000 5000 200000`; do \
 		printf "%d " $$i;\
 		./benchmark_clock_gettime $$i; \
 	done >> result_clock_gettime.csv
-	echo "N baseline baselineP OMP2 OMP2P OMP4 OMP4P avx avx_unroll" > result_error_rate.csv
-	for i in `seq 50000 5000 200000`; do \
+	echo "N baseline baselineP OMP2 OMP2P OMP4 OMP4P avx avx_{unroll}" > result_error_rate.csv
+	for i in `seq 5000 5000 200000`; do \
 		printf "%d " $$i;\
 		./benchmark_error_rate $$i; \
 	done >> result_error_rate.csv

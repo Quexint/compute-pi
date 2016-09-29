@@ -26,10 +26,14 @@ check: default
 	time ./time_test_avxunroll
 
 gencsv: default
-	for i in `seq 100 5000 25000`; do \
-		printf "%d," $$i;\
+	echo "N baseline openmp_2 openmp_4 avx avx_unroll" > result_clock_gettime.csv
+	for i in `seq 2000 2000 50000`; do \
+		printf "%d " $$i;\
 		./benchmark_clock_gettime $$i; \
-	done > result_clock_gettime.csv	
+	done >> result_clock_gettime.csv	
+
+plot: default gencsv
+	gnuplot runtime.gp
 
 clean:
 	rm -f $(EXECUTABLE) *.o *.s result_clock_gettime.csv
